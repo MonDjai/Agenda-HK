@@ -35,7 +35,7 @@
     --safe-bottom:env(safe-area-inset-bottom, 0px);
   }
 
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;overflow-wrap:break-word;}
 
   html,body{
     height:100%;
@@ -303,6 +303,459 @@
     color:#fff;
     background:var(--accent);
   }
+
+  /* ---- Écran Semaine ---- */
+  .semaine-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:12px;
+  }
+  .jour-bandeau{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+  }
+  .jour-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    cursor:pointer;
+  }
+  .jour-header .jour-nom{
+    font-size:15px;
+    font-weight:700;
+    color:var(--text);
+    flex:1;
+    min-width:0;
+  }
+  .jour-header .badge-aujourdhui{
+    font-size:10px;
+    font-weight:700;
+    color:var(--accent-2);
+    background:var(--accent-soft);
+    padding:2px 7px;
+    border-radius:999px;
+    margin-left:8px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    white-space:nowrap;
+  }
+  .jour-header .jour-resume{
+    font-size:12.5px;
+    color:var(--muted);
+    white-space:nowrap;
+    flex:none;
+  }
+  .jour-header .chevron{
+    font-size:11px;
+    color:var(--muted-2);
+    transition:transform .15s ease;
+    flex:none;
+  }
+  .jour-bandeau.open .chevron{
+    transform:rotate(180deg);
+  }
+  .jour-body{
+    padding:2px 16px 14px;
+    display:flex;
+    flex-direction:column;
+    border-top:1px solid var(--border);
+  }
+  .jour-body .vide{
+    color:var(--muted);
+    font-size:13px;
+    padding:12px 0 4px;
+  }
+  .bloc-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .bloc-row:last-child{border-bottom:none;}
+  .bloc-pastille{
+    width:9px;height:9px;border-radius:50%;flex:none;
+  }
+  .bloc-heure-input{
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:8px;
+    padding:5px 6px;
+    font-size:12.5px;
+    font-family:inherit;
+    width:78px;
+    flex:none;
+    color-scheme:dark;
+  }
+  .bloc-activite{
+    flex:1;
+    min-width:0;
+    font-size:13.5px;
+    color:var(--text);
+    line-height:1.3;
+  }
+  .bloc-activite.fait{
+    color:var(--muted);
+    text-decoration:line-through;
+  }
+  .bloc-check{
+    width:20px;
+    height:20px;
+    flex:none;
+    accent-color:var(--accent);
+  }
+
+  /* ---- Écran Bilan ---- */
+  .bilan-section{
+    margin-top:22px;
+  }
+  .bilan-section:first-child{margin-top:12px;}
+  .bilan-titre-section{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+    margin-bottom:10px;
+  }
+
+  .jauge-cat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    margin-bottom:10px;
+  }
+  .jauge-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .jauge-swatch{
+    width:9px;height:9px;border-radius:50%;flex:none;
+  }
+  .jauge-label{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+    flex:1;
+    min-width:0;
+  }
+  .jauge-cible{
+    font-size:11.5px;
+    color:var(--muted);
+    white-space:nowrap;
+    flex:none;
+  }
+  .jauge-track{
+    position:relative;
+    height:10px;
+    border-radius:6px;
+    background:var(--bg-elevated);
+    overflow:visible;
+  }
+  .jauge-fill-plan,
+  .jauge-fill-real{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    border-radius:6px;
+  }
+  .jauge-fill-real{
+    z-index:1;
+  }
+  .jauge-marker{
+    position:absolute;
+    top:-3px; bottom:-3px;
+    width:2px;
+    background:#fff;
+    opacity:.85;
+    z-index:2;
+    transform:translateX(-1px);
+  }
+  .jauge-details{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:9px;
+    line-height:1.4;
+  }
+  .jauge-details b{color:var(--text); font-weight:700;}
+
+  .indicateur-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .indicateur-row:last-child{border-bottom:none;}
+  .indicateur-info{
+    flex:1;
+    min-width:0;
+  }
+  .indicateur-label{
+    font-size:13.5px;
+    color:var(--text);
+    line-height:1.3;
+  }
+  .indicateur-objectif{
+    font-size:11.5px;
+    color:var(--muted-2);
+    margin-top:2px;
+  }
+  .indicateur-input{
+    width:56px;
+    flex:none;
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:8px;
+    padding:7px 6px;
+    font-size:13.5px;
+    font-family:inherit;
+    text-align:center;
+    color-scheme:dark;
+  }
+  .indicateur-badge{
+    flex:none;
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    padding:5px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .badge-atteint{
+    color:var(--success);
+    background:var(--success-soft);
+  }
+  .badge-suivre{
+    color:var(--muted);
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+  }
+
+  .bilan-textarea{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:var(--radius-md);
+    padding:13px 14px;
+    font-size:13.5px;
+    font-family:inherit;
+    line-height:1.5;
+    resize:vertical;
+  }
+  .bilan-textarea::placeholder{color:var(--muted-2);}
+
+  .checklist-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .checklist-row:last-child{border-bottom:none;}
+  .checklist-label{
+    flex:1;
+    min-width:0;
+    font-size:13.5px;
+    color:var(--text);
+    line-height:1.3;
+  }
+  .checklist-toggle{
+    display:flex;
+    flex:none;
+    gap:6px;
+  }
+  .toggle-btn{
+    border:1px solid var(--border);
+    background:var(--bg-elevated);
+    color:var(--muted);
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    padding:7px 12px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .toggle-btn.actif-oui{
+    background:var(--success-soft);
+    color:var(--success);
+    border-color:rgba(67,176,117,0.35);
+  }
+  .toggle-btn.actif-non{
+    background:var(--card-2);
+    color:var(--text);
+    border-color:var(--border);
+  }
+  .checklist-verdict{
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:var(--radius-md);
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+  }
+  .checklist-verdict.verdict-ok{
+    background:var(--success-soft);
+    color:var(--success);
+    border-color:rgba(67,176,117,0.35);
+  }
+
+  .btn-reset-semaine{
+    width:100%;
+    background:var(--card-2);
+    color:var(--danger);
+    border:1px solid rgba(224,99,122,0.35);
+  }
+
+  .historique-vide{
+    color:var(--muted);
+    font-size:13px;
+    padding:12px 0 4px;
+  }
+  .historique-detail{
+    gap:8px;
+  }
+  .historique-ligne{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.5;
+    padding:4px 0;
+  }
+  .historique-ligne b{color:var(--text); font-weight:700;}
+  .swatch-inline{
+    display:inline-block;
+    width:8px;height:8px;border-radius:50%;
+    margin-right:6px;
+  }
+
+  /* ---- Écran Réglages ---- */
+  .reglage-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:16px;
+    margin-bottom:10px;
+  }
+  .reglage-statut-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px 10px;
+    flex-wrap:wrap;
+  }
+  .reglage-statut-label{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+    flex:1;
+    min-width:0;
+  }
+  .statut-pill{
+    font-size:11.5px;
+    font-weight:700;
+    padding:5px 10px;
+    border-radius:999px;
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .statut-pill.statut-ok{
+    background:var(--success-soft);
+    color:var(--success);
+    border-color:rgba(67,176,117,0.35);
+  }
+  .statut-pill.statut-off{
+    background:rgba(224,99,122,0.14);
+    color:var(--danger);
+    border-color:rgba(224,99,122,0.35);
+  }
+  .reglage-souslabel{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+    margin-bottom:10px;
+  }
+  .reglage-note{
+    font-size:12px;
+    color:var(--muted-2);
+    line-height:1.5;
+    margin-top:10px;
+  }
+  .segmented{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .segmented-btn{
+    flex:1;
+    min-width:88px;
+    border:1px solid var(--border);
+    background:var(--bg-elevated);
+    color:var(--muted);
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    padding:10px 8px;
+    border-radius:12px;
+    cursor:pointer;
+    text-align:center;
+  }
+  .segmented-btn.actif{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  .apropos-ligne{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.55;
+    margin-bottom:8px;
+  }
+  .apropos-ligne:last-child{margin-bottom:0;}
+  .apropos-ligne b{color:var(--text);}
+
+  /* ---- Modale de demande de notification ---- */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(5,6,10,0.66);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:50;
+    padding:16px;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal-card{
+    width:100%;
+    max-width:488px;
+    background:var(--card-2);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    padding:24px 22px calc(20px + var(--safe-bottom));
+    text-align:center;
+    box-shadow:0 -10px 40px rgba(0,0,0,0.45);
+  }
+  .modal-emoji{font-size:36px; margin-bottom:10px;}
+  .modal-titre{font-size:17px; font-weight:700; color:var(--text); margin-bottom:8px;}
+  .modal-texte{font-size:13.5px; color:var(--muted); line-height:1.55; margin-bottom:18px; text-align:left;}
+  .modal-actions{display:flex; gap:10px;}
 </style>
 </head>
 <body>
@@ -321,31 +774,48 @@
       <div id="maintenantContent"></div>
     </section>
 
-    <!-- Écran Semaine (stub) -->
+    <!-- Écran Semaine -->
     <section class="screen" id="screen-semaine">
-      <div class="stub">
-        <span class="emoji">📅</span>
-        <div class="titre">Semaine</div>
-        <div class="sub">La vue des 7 jours arrive dans un prochain sprint.</div>
-      </div>
+      <div id="semaineContent"></div>
     </section>
 
-    <!-- Écran Bilan (stub) -->
+    <!-- Écran Bilan -->
     <section class="screen" id="screen-bilan">
-      <div class="stub">
-        <span class="emoji">📊</span>
-        <div class="titre">Bilan</div>
-        <div class="sub">Les jauges et indicateurs de la semaine arrivent dans un prochain sprint.</div>
+
+      <div class="bilan-section">
+        <div class="bilan-titre-section">Répartition du temps par catégorie</div>
+        <div id="bilanJauges"></div>
       </div>
+
+      <div class="bilan-section">
+        <div class="bilan-titre-section">Indicateurs de la semaine</div>
+        <div id="bilanIndicateurs"></div>
+      </div>
+
+      <div class="bilan-section">
+        <div class="bilan-titre-section">Catalogue de services OD</div>
+        <textarea id="bilanNoteInput" class="bilan-textarea" rows="3" placeholder="Note libre sur l'avancement du catalogue de services OD…"></textarea>
+      </div>
+
+      <div class="bilan-section">
+        <div class="bilan-titre-section">Règle des 3 résultats</div>
+        <div id="bilanChecklist"></div>
+      </div>
+
+      <div class="bilan-section">
+        <button class="btn btn-reset-semaine" id="btnReinitialiserSemaine">↻ Réinitialiser la semaine</button>
+      </div>
+
+      <div class="bilan-section">
+        <div class="bilan-titre-section">Historique des bilans</div>
+        <div id="bilanHistorique"></div>
+      </div>
+
     </section>
 
-    <!-- Écran Réglages (stub) -->
+    <!-- Écran Réglages -->
     <section class="screen" id="screen-reglages">
-      <div class="stub">
-        <span class="emoji">⚙️</span>
-        <div class="titre">Réglages</div>
-        <div class="sub">Notifications, export calendrier et réinitialisation arrivent dans un prochain sprint.</div>
-      </div>
+      <div id="reglagesContent"></div>
     </section>
 
   </main>
@@ -367,6 +837,21 @@
     </div>
   </nav>
 
+</div>
+
+<!-- Modale : demande d'autorisation de notification au premier lancement -->
+<div class="modal-overlay" id="modalNotif" hidden>
+  <div class="modal-card">
+    <div class="modal-emoji">🔔</div>
+    <div class="modal-titre">Activer les rappels ?</div>
+    <div class="modal-texte">
+      Agenda HK peut t'envoyer une notification au moment de chaque bloc de ton programme (et/ou 5 minutes avant), pour éviter d'avoir à ouvrir l'appli en continu pour vérifier l'heure. Ça fonctionne tant que le téléphone a ouvert l'appli récemment. Aucune donnée n'est envoyée à un serveur — tout reste sur ton téléphone.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-reporter" id="btnNotifPlusTard">Plus tard</button>
+      <button class="btn btn-fait" id="btnNotifActiver">Activer</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -392,6 +877,41 @@
   function catInfo(nom){
     return CATEGORIES[nom] || { label: nom, color:"#8A93A6" };
   }
+
+  var APP_VERSION = "1.0";
+
+  /* =========================================================
+     1bis. Configuration de l'écran Bilan (poids cibles, indicateurs,
+           questions de la règle des 3 résultats)
+     ========================================================= */
+  var BILAN_CIBLES = {
+    "Conseil/OD":      40,
+    "Business dev":    25,
+    "Appli/Formation": 15,
+    "Visibilité":      10,
+    "B42":             10
+  };
+  var BILAN_ORDRE_CATEGORIES = ["Conseil/OD","Business dev","Appli/Formation","Visibilité","B42"];
+
+  var INDICATEURS = [
+    { id:"dossiers_conseil",      label:"Dossiers conseil avancés",           objectif:1 },
+    { id:"offres_recherchees",    label:"Offres consultants recherchées",    objectif:5 },
+    { id:"offres_soumises",       label:"Offres soumises",                   objectif:1 },
+    { id:"propositions_envoyees", label:"Propositions ciblées envoyées",     objectif:1 },
+    { id:"relances_contacts",     label:"Relances / contacts",               objectif:5 },
+    { id:"publications_linkedin", label:"Publications LinkedIn",             objectif:1 },
+    { id:"formation_odp_afd",     label:"Séances de formation ODP/AFD",      objectif:2 },
+    { id:"blocs_dev_appli",       label:"Blocs de développement application",objectif:2 },
+    { id:"interactions_testeurs", label:"Interactions testeurs",             objectif:3 },
+    { id:"echange_mentor",        label:"Échange mentor",                    objectif:1 },
+    { id:"gouvernance_b42",       label:"Avancée gouvernance B42",           objectif:1 }
+  ];
+
+  var CHECKLIST_QUESTIONS = [
+    { id:"revenu",     label:"Revenu généré cette semaine ?" },
+    { id:"valeur",     label:"Valeur construite pour demain ?" },
+    { id:"visibilite", label:"Visibilité augmentée ?" }
+  ];
 
   /* =========================================================
      2. Programme type (semaine par défaut)
@@ -508,6 +1028,127 @@
   }
 
   var semaine = chargerSemaine();
+
+  /* =========================================================
+     3bis. Stockage local — Bilan hebdomadaire (indicateurs, note,
+           checklist) et historique des semaines archivées
+     ========================================================= */
+  var STORAGE_KEY_BILAN = "agendaHK_bilan";
+  var STORAGE_KEY_HISTORIQUE = "agendaHK_bilanHistorique";
+  var HISTORIQUE_MAX = 20;
+
+  function bilanParDefaut(){
+    var indicateurs = {};
+    INDICATEURS.forEach(function(ind){ indicateurs[ind.id] = 0; });
+    var checklist = {};
+    CHECKLIST_QUESTIONS.forEach(function(q){ checklist[q.id] = false; });
+    return { indicateurs: indicateurs, noteCatalogue:"", checklist: checklist };
+  }
+
+  function chargerBilan(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY_BILAN);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(data && typeof data === "object"){
+          var defaut = bilanParDefaut();
+          data.indicateurs = data.indicateurs || {};
+          data.checklist = data.checklist || {};
+          INDICATEURS.forEach(function(ind){
+            if(typeof data.indicateurs[ind.id] !== "number") data.indicateurs[ind.id] = defaut.indicateurs[ind.id];
+          });
+          CHECKLIST_QUESTIONS.forEach(function(q){
+            if(typeof data.checklist[q.id] !== "boolean") data.checklist[q.id] = false;
+          });
+          if(typeof data.noteCatalogue !== "string") data.noteCatalogue = "";
+          return data;
+        }
+      }
+    }catch(e){ /* localStorage indisponible ou corrompu : on repart d'un bilan vierge */ }
+    var defautBilan = bilanParDefaut();
+    sauvegarderBilan(defautBilan);
+    return defautBilan;
+  }
+
+  function sauvegarderBilan(b){
+    try{ localStorage.setItem(STORAGE_KEY_BILAN, JSON.stringify(b)); }
+    catch(e){ /* stockage plein ou indisponible : on continue sans persister */ }
+  }
+
+  function chargerHistorique(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY_HISTORIQUE);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(Array.isArray(data)) return data;
+      }
+    }catch(e){ /* localStorage indisponible ou corrompu : on repart d'un historique vide */ }
+    return [];
+  }
+
+  function sauvegarderHistorique(hist){
+    try{ localStorage.setItem(STORAGE_KEY_HISTORIQUE, JSON.stringify(hist)); }
+    catch(e){ /* stockage plein ou indisponible : on continue sans persister */ }
+  }
+
+  var bilan = chargerBilan();
+  var historiqueOuverts = {}; // état pli/dépli des bilans archivés, en mémoire seulement
+
+  /* =========================================================
+     3ter. Stockage local — Réglages (notifications) et suivi des
+           notifications déjà envoyées (pour éviter les doublons)
+     ========================================================= */
+  var STORAGE_KEY_REGLAGES = "agendaHK_reglages";
+  var STORAGE_KEY_NOTIFS_ENVOYEES = "agendaHK_notifsEnvoyees";
+
+  function reglagesParDefaut(){
+    return {
+      momentRappel: "les_deux", // "bloc" | "avant" | "les_deux"
+      notifDemandeeAuLancement: false
+    };
+  }
+
+  function chargerReglages(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY_REGLAGES);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(data && typeof data === "object"){
+          var defaut = reglagesParDefaut();
+          if(["bloc","avant","les_deux"].indexOf(data.momentRappel) === -1) data.momentRappel = defaut.momentRappel;
+          if(typeof data.notifDemandeeAuLancement !== "boolean") data.notifDemandeeAuLancement = false;
+          return data;
+        }
+      }
+    }catch(e){ /* localStorage indisponible ou corrompu : on repart des réglages par défaut */ }
+    var defautReglages = reglagesParDefaut();
+    sauvegarderReglages(defautReglages);
+    return defautReglages;
+  }
+
+  function sauvegarderReglages(r){
+    try{ localStorage.setItem(STORAGE_KEY_REGLAGES, JSON.stringify(r)); }
+    catch(e){ /* stockage plein ou indisponible : on continue sans persister */ }
+  }
+
+  function chargerNotifsEnvoyees(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY_NOTIFS_ENVOYEES);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(data && typeof data === "object" && Array.isArray(data.envoyees)) return data;
+      }
+    }catch(e){ /* localStorage indisponible ou corrompu */ }
+    return { date:"", envoyees:[] };
+  }
+
+  function sauvegarderNotifsEnvoyees(n){
+    try{ localStorage.setItem(STORAGE_KEY_NOTIFS_ENVOYEES, JSON.stringify(n)); }
+    catch(e){ /* stockage plein ou indisponible : on continue sans persister */ }
+  }
+
+  var reglages = chargerReglages();
+  var notifsEnvoyees = chargerNotifsEnvoyees();
 
   /* =========================================================
      4. Utilitaires date / heure
@@ -729,7 +1370,753 @@
   }
 
   /* =========================================================
-     6. Navigation par onglets
+     6. Logique écran "Semaine"
+     ========================================================= */
+  // Ordre d'affichage de la semaine (lundi → dimanche), indépendant
+  // de JOURS_CLES (utilisé par "Maintenant" pour lire l'index JS de Date.getDay()).
+  var JOURS_ORDRE_AFFICHAGE = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
+
+  // État d'ouverture (pli/dépli) des bandeaux, en mémoire seulement.
+  var joursOuverts = {};
+
+  function ouvrirJourCourantSemaine(){
+    joursOuverts = {};
+    joursOuverts[jourClef(new Date())] = true;
+  }
+
+  // Décale le bloc `id` du jour `jour` : nouvelle heure de début, durée conservée.
+  function decalerBlocHeure(jour, id, nouvelleHeureDebut){
+    var arr = semaine[jour] || [];
+    for(var i=0;i<arr.length;i++){
+      if(arr[i].id === id){
+        var duree = versMinutes(arr[i].fin) - versMinutes(arr[i].debut);
+        var nouveauDebutMin = versMinutes(nouvelleHeureDebut);
+        arr[i].debut = versHHMM(nouveauDebutMin);
+        arr[i].fin = versHHMM(nouveauDebutMin + duree);
+        break;
+      }
+    }
+    sauvegarderSemaine(semaine);
+    render();
+  }
+
+  function renderSemaine(){
+    var container = document.getElementById("semaineContent");
+    if(!container) return;
+    container.innerHTML = "";
+
+    var aujourdHui = jourClef(new Date());
+    var list = el("div","semaine-list");
+
+    JOURS_ORDRE_AFFICHAGE.forEach(function(jour){
+      var blocs = blocsDuJour(jour);
+      var total = blocs.length;
+      var faits = blocs.filter(function(b){ return b.fait; }).length;
+      var ouvert = !!joursOuverts[jour];
+
+      var bandeau = el("div","jour-bandeau" + (ouvert ? " open" : ""));
+
+      var header = el("div","jour-header");
+      var nomHtml = JOURS_LABEL[jour] + (jour === aujourdHui ? ' <span class="badge-aujourdhui">Aujourd’hui</span>' : "");
+      header.appendChild(el("div","jour-nom", nomHtml));
+      header.appendChild(el("div","jour-resume", total ? (faits + " / " + total + " faits") : "Rien de prévu"));
+      header.appendChild(el("div","chevron","▾"));
+      header.addEventListener("click", function(){
+        joursOuverts[jour] = !joursOuverts[jour];
+        renderSemaine();
+      });
+      bandeau.appendChild(header);
+
+      if(ouvert){
+        var body = el("div","jour-body");
+
+        if(!blocs.length){
+          body.appendChild(el("div","vide","Aucun bloc ce jour-là."));
+        } else {
+          blocs.forEach(function(b){
+            var cat = catInfo(b.categorie);
+            var row = el("div","bloc-row");
+
+            var pastille = el("span","bloc-pastille");
+            pastille.style.background = cat.color;
+            row.appendChild(pastille);
+
+            var heureInput = document.createElement("input");
+            heureInput.type = "time";
+            heureInput.className = "bloc-heure-input";
+            heureInput.value = b.debut;
+            heureInput.addEventListener("change", function(){
+              if(heureInput.value){ decalerBlocHeure(jour, b.id, heureInput.value); }
+            });
+            row.appendChild(heureInput);
+
+            row.appendChild(el("div","bloc-activite" + (b.fait ? " fait" : ""), escapeHtml(b.activite)));
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "bloc-check";
+            checkbox.checked = !!b.fait;
+            checkbox.addEventListener("change", function(){
+              marquerFait(jour, b.id);
+            });
+            row.appendChild(checkbox);
+
+            body.appendChild(row);
+          });
+        }
+
+        bandeau.appendChild(body);
+      }
+
+      list.appendChild(bandeau);
+    });
+
+    container.appendChild(list);
+  }
+
+  /* =========================================================
+     6bis. Logique écran "Bilan"
+     ========================================================= */
+  function formatDuree(mins){
+    mins = Math.round(mins || 0);
+    if(mins <= 0) return "0h";
+    var h = Math.floor(mins/60), m = mins % 60;
+    if(h === 0) return m + "min";
+    return h + "h" + (m ? (m<10?"0":"")+m : "");
+  }
+
+  // Additionne, par catégorie suivie, le temps planifié (tous les blocs de la
+  // semaine, quel que soit le jour) et le temps réalisé (blocs cochés "fait"),
+  // puis calcule le poids de chacune par rapport au total des 5 catégories
+  // suivies — comparable directement au poids cible (qui totalise 100).
+  function calculerJauges(){
+    var planMin = {}, realMin = {};
+    BILAN_ORDRE_CATEGORIES.forEach(function(c){ planMin[c] = 0; realMin[c] = 0; });
+
+    Object.keys(semaine).forEach(function(jour){
+      (semaine[jour] || []).forEach(function(b){
+        if(!BILAN_CIBLES.hasOwnProperty(b.categorie)) return;
+        var d = versMinutes(b.fin) - versMinutes(b.debut);
+        if(d < 0) d = 0;
+        planMin[b.categorie] += d;
+        if(b.fait) realMin[b.categorie] += d;
+      });
+    });
+
+    var planTotal = 0, realTotal = 0;
+    BILAN_ORDRE_CATEGORIES.forEach(function(c){ planTotal += planMin[c]; realTotal += realMin[c]; });
+
+    return BILAN_ORDRE_CATEGORIES.map(function(c){
+      return {
+        categorie: c,
+        cible: BILAN_CIBLES[c],
+        planMin: planMin[c],
+        realMin: realMin[c],
+        planPct: planTotal > 0 ? (planMin[c] / planTotal * 100) : 0,
+        realPct: realTotal > 0 ? (realMin[c] / realTotal * 100) : 0
+      };
+    });
+  }
+
+  function renderJauges(jauges){
+    var container = document.getElementById("bilanJauges");
+    if(!container) return;
+    jauges = jauges || calculerJauges();
+    container.innerHTML = "";
+
+    jauges.forEach(function(j){
+      var cat = catInfo(j.categorie);
+      var box = el("div","jauge-cat");
+
+      var head = el("div","jauge-head");
+      var swatch = el("span","jauge-swatch");
+      swatch.style.background = cat.color;
+      head.appendChild(swatch);
+      head.appendChild(el("span","jauge-label", cat.label));
+      head.appendChild(el("span","jauge-cible", "Cible " + j.cible + "%"));
+      box.appendChild(head);
+
+      var track = el("div","jauge-track");
+
+      var fillPlan = el("div","jauge-fill-plan");
+      fillPlan.style.width = Math.min(j.planPct,100) + "%";
+      fillPlan.style.background = hexToRgba(cat.color, 0.32);
+      track.appendChild(fillPlan);
+
+      var fillReal = el("div","jauge-fill-real");
+      fillReal.style.width = Math.min(j.realPct,100) + "%";
+      fillReal.style.background = cat.color;
+      track.appendChild(fillReal);
+
+      var marker = el("div","jauge-marker");
+      marker.style.left = Math.min(j.cible,100) + "%";
+      track.appendChild(marker);
+
+      box.appendChild(track);
+
+      box.appendChild(el("div","jauge-details",
+        "Planifié <b>" + Math.round(j.planPct) + "%</b> (" + formatDuree(j.planMin) + ") · " +
+        "Réalisé <b>" + Math.round(j.realPct) + "%</b> (" + formatDuree(j.realMin) + ")"
+      ));
+
+      container.appendChild(box);
+    });
+  }
+
+  function statutIndicateur(valeur, objectif){
+    return (Number(valeur) || 0) >= objectif;
+  }
+
+  function renderIndicateurs(){
+    var container = document.getElementById("bilanIndicateurs");
+    if(!container) return;
+    container.innerHTML = "";
+
+    INDICATEURS.forEach(function(ind){
+      var valeur = bilan.indicateurs[ind.id] || 0;
+      var atteint = statutIndicateur(valeur, ind.objectif);
+
+      var row = el("div","indicateur-row");
+
+      var info = el("div","indicateur-info");
+      info.appendChild(el("div","indicateur-label", escapeHtml(ind.label)));
+      info.appendChild(el("div","indicateur-objectif", "Objectif : " + ind.objectif));
+      row.appendChild(info);
+
+      var input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.inputMode = "numeric";
+      input.className = "indicateur-input";
+      input.value = valeur;
+
+      var badge = el("span","indicateur-badge " + (atteint ? "badge-atteint" : "badge-suivre"), atteint ? "Atteint" : "À suivre");
+
+      input.addEventListener("input", function(){
+        var v = Number(input.value);
+        if(isNaN(v) || v < 0) v = 0;
+        bilan.indicateurs[ind.id] = v;
+        sauvegarderBilan(bilan);
+        var estAtteint = statutIndicateur(v, ind.objectif);
+        badge.textContent = estAtteint ? "Atteint" : "À suivre";
+        badge.className = "indicateur-badge " + (estAtteint ? "badge-atteint" : "badge-suivre");
+      });
+
+      row.appendChild(input);
+      row.appendChild(badge);
+      container.appendChild(row);
+    });
+  }
+
+  function renderNoteLibre(){
+    var zone = document.getElementById("bilanNoteInput");
+    if(!zone) return;
+    zone.value = bilan.noteCatalogue || "";
+    zone.oninput = function(){
+      bilan.noteCatalogue = zone.value;
+      sauvegarderBilan(bilan);
+    };
+  }
+
+  function renderChecklist(){
+    var container = document.getElementById("bilanChecklist");
+    if(!container) return;
+    container.innerHTML = "";
+
+    CHECKLIST_QUESTIONS.forEach(function(q){
+      var actif = !!bilan.checklist[q.id];
+      var row = el("div","checklist-row");
+      row.appendChild(el("div","checklist-label", escapeHtml(q.label)));
+
+      var toggle = el("div","checklist-toggle");
+      var btnOui = el("button","toggle-btn" + (actif ? " actif-oui" : ""), "Oui");
+      var btnNon = el("button","toggle-btn" + (!actif ? " actif-non" : ""), "Non");
+      btnOui.addEventListener("click", function(){
+        bilan.checklist[q.id] = true;
+        sauvegarderBilan(bilan);
+        renderChecklist();
+      });
+      btnNon.addEventListener("click", function(){
+        bilan.checklist[q.id] = false;
+        sauvegarderBilan(bilan);
+        renderChecklist();
+      });
+      toggle.appendChild(btnOui);
+      toggle.appendChild(btnNon);
+      row.appendChild(toggle);
+
+      container.appendChild(row);
+    });
+
+    var toutesOui = CHECKLIST_QUESTIONS.every(function(q){ return !!bilan.checklist[q.id]; });
+    var nbOui = CHECKLIST_QUESTIONS.filter(function(q){ return !!bilan.checklist[q.id]; }).length;
+    var verdict = el("div","checklist-verdict" + (toutesOui ? " verdict-ok" : ""));
+    verdict.textContent = toutesOui
+      ? "✓ Semaine alignée — les 3 résultats sont là"
+      : nbOui + " / 3 résultats confirmés";
+    container.appendChild(verdict);
+  }
+
+  function renderHistorique(){
+    var container = document.getElementById("bilanHistorique");
+    if(!container) return;
+    container.innerHTML = "";
+
+    var hist = chargerHistorique();
+    if(!hist.length){
+      container.appendChild(el("div","historique-vide","Aucun bilan archivé pour l'instant."));
+      return;
+    }
+
+    hist.forEach(function(item){
+      var ouvert = !!historiqueOuverts[item.id];
+      var nbAtteints = INDICATEURS.filter(function(ind){
+        return statutIndicateur(item.indicateurs ? item.indicateurs[ind.id] : 0, ind.objectif);
+      }).length;
+
+      var bandeau = el("div","jour-bandeau historique-item" + (ouvert ? " open" : ""));
+
+      var header = el("div","jour-header");
+      header.appendChild(el("div","jour-nom", escapeHtml(item.periode || "Bilan archivé")));
+      header.appendChild(el("div","jour-resume", nbAtteints + " / " + INDICATEURS.length + " atteints"));
+      header.appendChild(el("div","chevron","▾"));
+      header.addEventListener("click", function(){
+        historiqueOuverts[item.id] = !historiqueOuverts[item.id];
+        renderHistorique();
+      });
+      bandeau.appendChild(header);
+
+      if(ouvert){
+        var body = el("div","jour-body historique-detail");
+
+        (item.jauges || []).forEach(function(j){
+          var cat = catInfo(j.categorie);
+          body.appendChild(el("div","historique-ligne",
+            '<span class="swatch-inline" style="background:' + cat.color + '"></span>' +
+            cat.label + " — cible " + j.cible + "% · planifié " + Math.round(j.planPct) + "% · réalisé " + Math.round(j.realPct) + "%"
+          ));
+        });
+
+        INDICATEURS.forEach(function(ind){
+          var v = item.indicateurs ? (item.indicateurs[ind.id] || 0) : 0;
+          var ok = statutIndicateur(v, ind.objectif);
+          body.appendChild(el("div","historique-ligne",
+            escapeHtml(ind.label) + " : <b>" + v + "</b> / " + ind.objectif + " — " + (ok ? "Atteint" : "À suivre")
+          ));
+        });
+
+        if(item.noteCatalogue){
+          body.appendChild(el("div","historique-ligne","Catalogue OD : " + escapeHtml(item.noteCatalogue)));
+        }
+
+        body.appendChild(el("div","historique-ligne",
+          item.verdict3 ? "✓ Règle des 3 résultats validée" : "Règle des 3 résultats non complète"
+        ));
+
+        bandeau.appendChild(body);
+      }
+
+      container.appendChild(bandeau);
+    });
+  }
+
+  // Archive le bilan courant (jauges + indicateurs + note + checklist) dans
+  // l'historique local, puis repart sur une semaine vierge à partir du même
+  // programme type (remise à zéro des "fait" et des horaires décalés).
+  function reinitialiserSemaine(){
+    var confirmation = window.confirm(
+      "Réinitialiser la semaine ?\n\nLe bilan actuel sera archivé dans l'historique, puis la semaine repartira du programme type (cases « fait » et horaires décalés remis à zéro)."
+    );
+    if(!confirmation) return;
+
+    var jauges = calculerJauges();
+    var archive = {
+      id: "bilan-" + Date.now(),
+      periode: "Semaine clôturée le " + formatDateLongue(new Date()),
+      jauges: jauges,
+      indicateurs: JSON.parse(JSON.stringify(bilan.indicateurs)),
+      noteCatalogue: bilan.noteCatalogue,
+      checklist: JSON.parse(JSON.stringify(bilan.checklist)),
+      verdict3: CHECKLIST_QUESTIONS.every(function(q){ return !!bilan.checklist[q.id]; })
+    };
+
+    var hist = chargerHistorique();
+    hist.unshift(archive);
+    if(hist.length > HISTORIQUE_MAX) hist = hist.slice(0, HISTORIQUE_MAX);
+    sauvegarderHistorique(hist);
+
+    semaine = assignIds(programmeParDefaut());
+    sauvegarderSemaine(semaine);
+
+    bilan = bilanParDefaut();
+    sauvegarderBilan(bilan);
+
+    historiqueOuverts = {};
+    render();
+  }
+
+  function renderBilan(){
+    renderJauges();
+    renderIndicateurs();
+    renderNoteLibre();
+    renderChecklist();
+    renderHistorique();
+  }
+
+  /* =========================================================
+     6ter. Logique écran "Réglages" + notifications
+     ========================================================= */
+  function dateStrDuJour(d){
+    return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+  }
+
+  function notificationsPriseEnCharge(){
+    return "Notification" in window;
+  }
+
+  function libellePermissionNotif(){
+    if(!notificationsPriseEnCharge()) return "Non prises en charge sur ce navigateur";
+    if(Notification.permission === "granted") return "Activées";
+    if(Notification.permission === "denied") return "Refusées (à réactiver dans Chrome)";
+    return "Non activées";
+  }
+
+  // Envoie une notification Android via le service worker actif si possible
+  // (plus fiable sur Chrome mobile), sinon via l'API Notification directe.
+  // Important : on utilise getRegistration() plutôt que navigator.serviceWorker.ready,
+  // car "ready" reste indéfiniment en attente si aucun service worker ne s'active
+  // jamais (ex. sw.js absent/en échec) — ce qui bloquerait toute notification.
+  function envoyerNotification(titre, corps){
+    if(!notificationsPriseEnCharge() || Notification.permission !== "granted") return;
+    var options = { body: corps, icon:"icon-192.png", badge:"icon-192.png", tag:"agendaHK-" + Date.now() };
+
+    function viaNotificationDirecte(){
+      try{ new Notification(titre, options); }
+      catch(e){ /* certains contextes mobiles n'autorisent pas le constructeur direct */ }
+    }
+
+    if(navigator.serviceWorker && navigator.serviceWorker.getRegistration){
+      navigator.serviceWorker.getRegistration().then(function(reg){
+        if(reg && reg.active && reg.showNotification){ reg.showNotification(titre, options); }
+        else { viaNotificationDirecte(); }
+      }).catch(viaNotificationDirecte);
+    } else {
+      viaNotificationDirecte();
+    }
+  }
+
+  // Compare l'heure actuelle aux blocs du jour et déclenche une notification
+  // au(x) moment(s) choisi(s) dans les réglages ("à l'heure du bloc" et/ou
+  // "5 minutes avant"). Fenêtre de tolérance de 2 minutes pour absorber
+  // l'intervalle de vérification et un léger retard de réouverture de l'appli.
+  function verifierNotifications(){
+    if(!notificationsPriseEnCharge() || Notification.permission !== "granted") return;
+
+    var maintenant = new Date();
+    var todayStr = dateStrDuJour(maintenant);
+    if(notifsEnvoyees.date !== todayStr){
+      notifsEnvoyees = { date: todayStr, envoyees: [] };
+    }
+
+    var jour = jourClef(maintenant);
+    var minsMaintenant = maintenant.getHours()*60 + maintenant.getMinutes();
+    var blocs = blocsDuJour(jour);
+    var modifie = false;
+
+    blocs.forEach(function(b){
+      var debutMin = versMinutes(b.debut);
+      var cibles = [];
+      if(reglages.momentRappel === "bloc" || reglages.momentRappel === "les_deux"){
+        cibles.push({ type:"bloc", minute: debutMin });
+      }
+      if(reglages.momentRappel === "avant" || reglages.momentRappel === "les_deux"){
+        cibles.push({ type:"avant", minute: debutMin - 5 });
+      }
+      cibles.forEach(function(cible){
+        if(cible.minute < 0) return;
+        var cle = todayStr + "|" + b.id + "|" + cible.type;
+        if(notifsEnvoyees.envoyees.indexOf(cle) !== -1) return;
+        if(minsMaintenant >= cible.minute && minsMaintenant <= cible.minute + 2){
+          if(cible.type === "bloc"){
+            envoyerNotification("⏰ " + b.activite, "C'est l'heure (" + b.debut + "–" + b.fin + ")" + (b.resultatAttendu ? " · " + b.resultatAttendu : ""));
+          } else {
+            envoyerNotification("Dans 5 minutes", b.activite + " commence à " + b.debut);
+          }
+          notifsEnvoyees.envoyees.push(cle);
+          modifie = true;
+        }
+      });
+    });
+
+    if(modifie) sauvegarderNotifsEnvoyees(notifsEnvoyees);
+  }
+
+  // Affiche, une seule fois (au tout premier lancement), la modale expliquant
+  // à quoi servent les notifications avant de déclencher la demande native.
+  function verifierPremierLancement(){
+    if(reglages.notifDemandeeAuLancement) return;
+    if(!notificationsPriseEnCharge() || Notification.permission !== "default") return;
+    var modal = document.getElementById("modalNotif");
+    if(modal) modal.hidden = false;
+  }
+
+  function fermerModalNotif(){
+    var modal = document.getElementById("modalNotif");
+    if(modal) modal.hidden = true;
+    reglages.notifDemandeeAuLancement = true;
+    sauvegarderReglages(reglages);
+  }
+
+  /* =========================================================
+     6quater. Export calendrier (.ics) — événements récurrents
+     Principe : chaque bloc de la semaine devient UN événement
+     hebdomadaire récurrent (RRULE FREQ=WEEKLY). Un import unique
+     dans Google Agenda suffit ensuite : Google gère l'alarme et la
+     répétition nativement, sans réimport, tant que les horaires ou
+     les blocs ne changent pas. Un UID stable (basé sur l'id du
+     bloc) permet, en cas de ré-export après un petit changement, de
+     mettre à jour les événements existants plutôt que d'en créer
+     des doublons.
+
+     Remarque fuseau horaire : Hamadou est à Abidjan (UTC+0, pas
+     d'heure d'été), donc l'heure locale du bloc et l'heure UTC sont
+     numériquement identiques — on peut écrire les horaires en UTC
+     ("Z") directement, sans bloc VTIMEZONE, tout en obtenant la
+     bonne heure locale une fois importé dans Google Agenda.
+     ========================================================= */
+  var ICS_JOUR_BYDAY = {
+    dimanche:"SU", lundi:"MO", mardi:"TU", mercredi:"WE",
+    jeudi:"TH", vendredi:"FR", samedi:"SA"
+  };
+
+  function pad2(n){ return (n<10?"0":"") + n; }
+
+  // Prochaine occurrence (à partir d'aujourd'hui inclus) du jour de semaine
+  // `jourClefCible` à l'heure locale "HH:MM" donnée — sert de première
+  // occurrence (DTSTART) pour la règle de récurrence hebdomadaire.
+  function prochaineOccurrence(jourClefCible, hhmm){
+    var p = hhmm.split(":");
+    var h = parseInt(p[0],10), m = parseInt(p[1],10);
+    var maintenant = new Date();
+    var d = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate(), h, m, 0, 0);
+    var cibleIdx = JOURS_CLES.indexOf(jourClefCible);
+    var diffJours = (cibleIdx - d.getDay() + 7) % 7;
+    d.setDate(d.getDate() + diffJours);
+    return d;
+  }
+
+  // Formate une date locale (Abidjan = UTC+0) en horodatage iCalendar UTC.
+  function versICSDate(d){
+    return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) +
+      "T" + pad2(d.getHours()) + pad2(d.getMinutes()) + "00Z";
+  }
+
+  // DTSTAMP : horodatage réel (véritable UTC), indépendant de l'astuce
+  // ci-dessus qui suppose une heure locale déjà en UTC+0.
+  function dtstampUTC(){
+    return new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z$/,"Z");
+  }
+
+  function icsEscape(str){
+    return String(str || "")
+      .replace(/\\/g,"\\\\")
+      .replace(/;/g,"\\;")
+      .replace(/,/g,"\\,")
+      .replace(/\r?\n/g,"\\n");
+  }
+
+  // Repli de ligne simple (limite RFC 5545 ~75 octets) : les lecteurs de
+  // calendrier tolèrent en général les lignes longues, mais on reste
+  // conforme par prudence.
+  function icsFoldLine(ligne){
+    if(ligne.length <= 74) return ligne;
+    var out = ligne.slice(0,74);
+    var reste = ligne.slice(74);
+    while(reste.length > 0){
+      out += "\r\n " + reste.slice(0,73);
+      reste = reste.slice(73);
+    }
+    return out;
+  }
+
+  function genererICS(){
+    var lignes = [];
+    function ajouter(l){ lignes.push(icsFoldLine(l)); }
+
+    ajouter("BEGIN:VCALENDAR");
+    ajouter("VERSION:2.0");
+    ajouter("PRODID:-//Agenda HK//Programme hebdomadaire//FR");
+    ajouter("CALSCALE:GREGORIAN");
+    ajouter("METHOD:PUBLISH");
+    ajouter("X-WR-CALNAME:" + icsEscape("Agenda HK"));
+
+    var timbre = dtstampUTC();
+    var nbEvenements = 0;
+
+    JOURS_ORDRE_AFFICHAGE.forEach(function(jour){
+      blocsDuJour(jour).forEach(function(b){
+        if(!b.debut || !b.fin) return;
+
+        var debutDate = prochaineOccurrence(jour, b.debut);
+        var finDate = prochaineOccurrence(jour, b.fin);
+        // Sécurité si un bloc franchissait minuit (cas non présent dans le
+        // programme type actuel, mais géré si les horaires changent un jour).
+        if(versMinutes(b.fin) <= versMinutes(b.debut)) finDate.setDate(finDate.getDate() + 1);
+
+        var cat = catInfo(b.categorie);
+        var descriptionParts = ["Catégorie : " + cat.label];
+        if(b.resultatAttendu) descriptionParts.push("Résultat attendu : " + b.resultatAttendu);
+
+        ajouter("BEGIN:VEVENT");
+        ajouter("UID:" + b.id + "@agenda-hk.hamadoukone");
+        ajouter("DTSTAMP:" + timbre);
+        ajouter("DTSTART:" + versICSDate(debutDate));
+        ajouter("DTEND:" + versICSDate(finDate));
+        ajouter("RRULE:FREQ=WEEKLY;BYDAY=" + ICS_JOUR_BYDAY[jour]);
+        ajouter("SUMMARY:" + icsEscape(b.activite));
+        ajouter("DESCRIPTION:" + icsEscape(descriptionParts.join(" — ")));
+        ajouter("CATEGORIES:" + icsEscape(cat.label));
+        ajouter("END:VEVENT");
+        nbEvenements++;
+      });
+    });
+
+    ajouter("END:VCALENDAR");
+    return { contenu: lignes.join("\r\n") + "\r\n", nbEvenements: nbEvenements };
+  }
+
+  function dateStrFichier(d){
+    return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate());
+  }
+
+  function exporterVersGoogleAgenda(){
+    var resultat = genererICS();
+    if(resultat.nbEvenements === 0){
+      alert("Aucun bloc à exporter : le programme de la semaine est vide.");
+      return;
+    }
+    try{
+      var blob = new Blob([resultat.contenu], { type:"text/calendar;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "agenda-hk-" + dateStrFichier(new Date()) + ".ics";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    }catch(e){
+      alert("Le téléchargement du fichier .ics a échoué sur ce navigateur.");
+    }
+  }
+
+  function reinitialiserDonnees(){
+    var confirmation = window.confirm(
+      "Réinitialiser toutes les données ?\n\nCette action efface définitivement le programme, les cases « fait », l'historique des bilans et les réglages de l'appli. À utiliser en dernier recours."
+    );
+    if(!confirmation) return;
+    try{ localStorage.clear(); }catch(e){ /* stockage indisponible */ }
+    location.reload();
+  }
+
+  function renderReglages(){
+    var container = document.getElementById("reglagesContent");
+    if(!container) return;
+    container.innerHTML = "";
+
+    // --- Section Notifications ---
+    var secNotif = el("div","bilan-section");
+    secNotif.appendChild(el("div","bilan-titre-section","Notifications"));
+
+    var statutBox = el("div","reglage-card");
+    var statutRow = el("div","reglage-statut-row");
+    statutRow.appendChild(el("div","reglage-statut-label","Statut"));
+    var statutClasse = "statut-pill" + (Notification && Notification.permission === "granted" ? " statut-ok" : (notificationsPriseEnCharge() && Notification.permission === "denied" ? " statut-off" : ""));
+    statutRow.appendChild(el("span", statutClasse, libellePermissionNotif()));
+    statutBox.appendChild(statutRow);
+
+    if(notificationsPriseEnCharge() && Notification.permission !== "granted"){
+      var btnActiver = document.createElement("button");
+      btnActiver.className = "btn btn-fait";
+      btnActiver.style.marginTop = "12px";
+      btnActiver.textContent = "Activer les notifications";
+      btnActiver.addEventListener("click", function(){
+        Notification.requestPermission().then(function(){
+          reglages.notifDemandeeAuLancement = true;
+          sauvegarderReglages(reglages);
+          renderReglages();
+        });
+      });
+      statutBox.appendChild(btnActiver);
+    }
+    if(notificationsPriseEnCharge() && Notification.permission === "denied"){
+      statutBox.appendChild(el("div","reglage-note","Les notifications ont été bloquées pour cette appli dans Chrome. Pour les réactiver : Chrome → Paramètres du site → Notifications."));
+    }
+    secNotif.appendChild(statutBox);
+
+    var momentBox = el("div","reglage-card");
+    momentBox.appendChild(el("div","reglage-souslabel","Moment du rappel"));
+    var segmented = el("div","segmented");
+    var optionsRappel = [
+      { val:"bloc", label:"À l'heure du bloc" },
+      { val:"avant", label:"5 min avant" },
+      { val:"les_deux", label:"Les deux" }
+    ];
+    optionsRappel.forEach(function(opt){
+      var b = document.createElement("button");
+      b.className = "segmented-btn" + (reglages.momentRappel === opt.val ? " actif" : "");
+      b.textContent = opt.label;
+      b.addEventListener("click", function(){
+        reglages.momentRappel = opt.val;
+        sauvegarderReglages(reglages);
+        renderReglages();
+      });
+      segmented.appendChild(b);
+    });
+    momentBox.appendChild(segmented);
+    secNotif.appendChild(momentBox);
+
+    container.appendChild(secNotif);
+
+    // --- Section Export calendrier ---
+    var secExport = el("div","bilan-section");
+    secExport.appendChild(el("div","bilan-titre-section","Export calendrier"));
+    var exportBox = el("div","reglage-card");
+    exportBox.appendChild(el("div","reglage-souslabel","Google Agenda"));
+    exportBox.appendChild(el("div","reglage-note",
+      "Génère un fichier .ics avec tous les blocs de la semaine, sous forme d'événements récurrents (répétition hebdomadaire). Un import unique suffit : Google Agenda gère ensuite l'alarme chaque semaine, sans réimport — sauf si tu changes la structure du programme (nouveaux horaires ou blocs), auquel cas il faut régénérer et réimporter ce fichier."
+    ));
+    var btnExport = document.createElement("button");
+    btnExport.className = "btn btn-fait";
+    btnExport.style.marginTop = "12px";
+    btnExport.textContent = "📅 Exporter vers Google Agenda";
+    btnExport.addEventListener("click", exporterVersGoogleAgenda);
+    exportBox.appendChild(btnExport);
+    secExport.appendChild(exportBox);
+    container.appendChild(secExport);
+
+    // --- Section Données ---
+    var secDonnees = el("div","bilan-section");
+    secDonnees.appendChild(el("div","bilan-titre-section","Données"));
+    var btnReset = document.createElement("button");
+    btnReset.className = "btn btn-reset-semaine";
+    btnReset.textContent = "🗑 Réinitialiser les données";
+    btnReset.addEventListener("click", reinitialiserDonnees);
+    secDonnees.appendChild(btnReset);
+    container.appendChild(secDonnees);
+
+    // --- Section À propos ---
+    var secApropos = el("div","bilan-section");
+    secApropos.appendChild(el("div","bilan-titre-section","À propos"));
+    var aproposBox = el("div","reglage-card");
+    aproposBox.appendChild(el("div","apropos-ligne", "<b>Agenda HK</b> — version " + APP_VERSION));
+    aproposBox.appendChild(el("div","apropos-ligne", "Aucune donnée ne quitte ton téléphone : pas de compte, pas de serveur, aucun appel réseau pour le fonctionnement courant. Tout est stocké localement dans ce navigateur."));
+    secApropos.appendChild(aproposBox);
+    container.appendChild(secApropos);
+  }
+
+  /* =========================================================
+     7. Navigation par onglets
      ========================================================= */
   var screens = ["maintenant","semaine","bilan","reglages"];
 
@@ -744,22 +2131,63 @@
 
   document.querySelectorAll(".tab-btn").forEach(function(btn){
     btn.addEventListener("click", function(){
-      afficherEcran(btn.getAttribute("data-screen"));
+      var nom = btn.getAttribute("data-screen");
+      if(nom === "semaine"){
+        // Le jour en cours est déplié automatiquement à chaque ouverture de l'onglet.
+        ouvrirJourCourantSemaine();
+        renderSemaine();
+      }
+      afficherEcran(nom);
     });
   });
 
   /* =========================================================
-     7. Rendu global + rafraîchissement périodique
+     8. Rendu global + rafraîchissement périodique
      ========================================================= */
   function render(){
     renderMaintenant();
+    renderSemaine();
+    renderBilan();
+    renderReglages();
   }
 
+  var btnReinitialiser = document.getElementById("btnReinitialiserSemaine");
+  if(btnReinitialiser) btnReinitialiser.addEventListener("click", reinitialiserSemaine);
+
+  var btnNotifPlusTard = document.getElementById("btnNotifPlusTard");
+  if(btnNotifPlusTard) btnNotifPlusTard.addEventListener("click", fermerModalNotif);
+
+  var btnNotifActiver = document.getElementById("btnNotifActiver");
+  if(btnNotifActiver) btnNotifActiver.addEventListener("click", function(){
+    if(notificationsPriseEnCharge()){
+      Notification.requestPermission().then(function(){
+        fermerModalNotif();
+        renderReglages();
+        verifierNotifications();
+      });
+    } else {
+      fermerModalNotif();
+    }
+  });
+
+  ouvrirJourCourantSemaine();
   render();
   setInterval(render, 30000); // détection auto du bloc en cours, sans action utilisateur
 
+  // Notifications : vérification régulière pendant que l'appli est ouverte,
+  // et dès qu'elle redevient visible après une mise en veille récente.
+  verifierPremierLancement();
+  verifierNotifications();
+  setInterval(verifierNotifications, 20000);
+  document.addEventListener("visibilitychange", function(){
+    if(!document.hidden){
+      verifierNotifications();
+      render();
+    }
+  });
+
   /* =========================================================
-     8. Service worker (hors-ligne + installabilité)
+     9. Service worker (hors-ligne + installabilité)
      ========================================================= */
   if("serviceWorker" in navigator){
     window.addEventListener("load", function(){
