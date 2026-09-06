@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agenda HK</title>
+<meta name="theme-color" content="#0B0D12">
+<meta name="description" content="Agenda HK — le bloc en cours, au bon moment.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Agenda HK">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root{
+    --bg:#0B0D12;
+    --bg-elevated:#12141C;
+    --card:#151822;
+    --card-2:#1B1F2B;
+    --border:#262B38;
+    --text:#ECEEF3;
+    --muted:#8A93A6;
+    --muted-2:#5C6478;
+    --accent:#5B6EF5;
+    --accent-2:#7C8CFB;
+    --accent-soft:rgba(91,110,245,0.16);
+    --success:#43B075;
+    --success-soft:rgba(67,176,117,0.16);
+    --danger:#E0637A;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --safe-bottom:env(safe-area-inset-bottom, 0px);
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  #app{
+    max-width:520px;
+    margin:0 auto;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    background:var(--bg);
+  }
+
+  header.topbar{
+    padding:18px 20px 8px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+  }
+
+  header.topbar .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    color:var(--accent-2);
+    text-transform:uppercase;
+  }
+
+  header.topbar .brand .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+
+  header.topbar .date-line{
+    font-size:20px;
+    font-weight:700;
+    color:var(--text);
+    text-transform:capitalize;
+  }
+
+  header.topbar .time-line{
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  main{
+    flex:1;
+    padding:8px 20px calc(96px + var(--safe-bottom));
+    overflow-y:auto;
+  }
+
+  .screen{display:none;}
+  .screen.active{display:block; animation:fadein .18s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---- Carte bloc en cours ---- */
+  .now-card{
+    background:linear-gradient(180deg, var(--card-2), var(--card));
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    padding:22px;
+    margin-top:12px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .now-card .cat-bar{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+  }
+
+  .now-card .cat-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:700;
+    padding:5px 10px;
+    border-radius:999px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+
+  .now-card .cat-chip .swatch{
+    width:8px;height:8px;border-radius:50%;
+  }
+
+  .now-card .activite{
+    font-size:22px;
+    font-weight:700;
+    line-height:1.28;
+    margin:14px 0 6px;
+  }
+
+  .now-card .resultat{
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:4px;
+  }
+
+  .now-card .resultat b{color:var(--text); font-weight:600;}
+
+  .now-card .fin-line{
+    font-size:13px;
+    color:var(--muted-2);
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .now-card .actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+
+  .btn{
+    flex:1;
+    border:none;
+    border-radius:var(--radius-md);
+    padding:13px 12px;
+    font-size:14.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    transition:transform .08s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+
+  .btn-fait{
+    background:var(--accent);
+    color:#fff;
+  }
+  .btn-fait.done{
+    background:var(--success-soft);
+    color:var(--success);
+    border:1px solid rgba(67,176,117,0.35);
+  }
+
+  .btn-reporter{
+    background:var(--card-2);
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+
+  /* ---- Aperçu bloc suivant ---- */
+  .next-preview{
+    margin-top:14px;
+    padding:14px 16px;
+    background:var(--bg-elevated);
+    border:1px dashed var(--border);
+    border-radius:var(--radius-md);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .next-preview .swatch{
+    width:10px;height:10px;border-radius:50%;flex:none;
+  }
+  .next-preview .label{
+    font-size:11px;
+    color:var(--muted-2);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .next-preview .titre{
+    font-size:14px;
+    color:var(--text);
+    font-weight:600;
+  }
+  .next-preview .heure{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-left:auto;
+    white-space:nowrap;
+    padding-left:8px;
+  }
+
+  /* ---- État neutre / rien de prévu ---- */
+  .empty-state{
+    text-align:center;
+    padding:56px 20px 24px;
+    color:var(--muted);
+  }
+  .empty-state .emoji{font-size:40px; margin-bottom:14px;}
+  .empty-state .msg{font-size:16px; font-weight:600; color:var(--text);}
+  .empty-state .sub{font-size:13.5px; margin-top:6px; color:var(--muted);}
+
+  /* ---- Écrans à venir (stubs) ---- */
+  .stub{
+    margin-top:40px;
+    text-align:center;
+    color:var(--muted);
+    padding:0 12px;
+  }
+  .stub .emoji{font-size:34px; margin-bottom:12px; display:block;}
+  .stub .titre{font-size:16px; font-weight:700; color:var(--text); margin-bottom:6px;}
+  .stub .sub{font-size:13.5px; line-height:1.5;}
+
+  /* ---- Barre d'onglets ---- */
+  nav.tabbar{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    display:flex;
+    justify-content:center;
+    z-index:10;
+    background:linear-gradient(180deg, rgba(11,13,18,0), var(--bg) 30%);
+    padding-top:14px;
+  }
+  nav.tabbar .inner{
+    width:100%;
+    max-width:520px;
+    display:flex;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    margin:0 14px calc(14px + var(--safe-bottom));
+    padding:6px;
+    gap:4px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  }
+  .tab-btn{
+    flex:1;
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-family:inherit;
+    padding:10px 4px 8px;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    font-size:11px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .tab-btn .icon{font-size:19px; line-height:1;}
+  .tab-btn.active{
+    color:#fff;
+    background:var(--accent);
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Agenda HK</div>
+    <div class="date-line" id="dateLine">—</div>
+    <div class="time-line" id="timeLine">—</div>
+  </header>
+
+  <main>
+
+    <!-- Écran Maintenant -->
+    <section class="screen active" id="screen-maintenant">
+      <div id="maintenantContent"></div>
+    </section>
+
+    <!-- Écran Semaine (stub) -->
+    <section class="screen" id="screen-semaine">
+      <div class="stub">
+        <span class="emoji">📅</span>
+        <div class="titre">Semaine</div>
+        <div class="sub">La vue des 7 jours arrive dans un prochain sprint.</div>
+      </div>
+    </section>
+
+    <!-- Écran Bilan (stub) -->
+    <section class="screen" id="screen-bilan">
+      <div class="stub">
+        <span class="emoji">📊</span>
+        <div class="titre">Bilan</div>
+        <div class="sub">Les jauges et indicateurs de la semaine arrivent dans un prochain sprint.</div>
+      </div>
+    </section>
+
+    <!-- Écran Réglages (stub) -->
+    <section class="screen" id="screen-reglages">
+      <div class="stub">
+        <span class="emoji">⚙️</span>
+        <div class="titre">Réglages</div>
+        <div class="sub">Notifications, export calendrier et réinitialisation arrivent dans un prochain sprint.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar">
+    <div class="inner">
+      <button class="tab-btn active" data-screen="maintenant">
+        <span class="icon">🏠</span>Maintenant
+      </button>
+      <button class="tab-btn" data-screen="semaine">
+        <span class="icon">📅</span>Semaine
+      </button>
+      <button class="tab-btn" data-screen="bilan">
+        <span class="icon">📊</span>Bilan
+      </button>
+      <button class="tab-btn" data-screen="reglages">
+        <span class="icon">⚙️</span>Réglages
+      </button>
+    </div>
+  </nav>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     1. Catégories (couleurs — repère visuel identique à l'Excel,
+        adaptées au thème sombre)
+     ========================================================= */
+  var CATEGORIES = {
+    "Pilotage":         { label:"Pilotage",         color:"#9AA5B8" },
+    "Conseil/OD":       { label:"Conseil / OD",     color:"#4F8FE0" },
+    "Pause":            { label:"Pause",            color:"#525A6B" },
+    "Business dev":     { label:"Business dev",     color:"#43B075" },
+    "Visibilité":       { label:"Visibilité",       color:"#3FC2C6" },
+    "Appli/Formation":  { label:"Appli / Formation",color:"#F2994A" },
+    "Tampon":           { label:"Tampon",           color:"#E0637A" },
+    "B42":              { label:"B42",              color:"#E0B93E" },
+    "Repos":            { label:"Repos",            color:"#9B8AE0" }
+  };
+
+  function catInfo(nom){
+    return CATEGORIES[nom] || { label: nom, color:"#8A93A6" };
+  }
+
+  /* =========================================================
+     2. Programme type (semaine par défaut)
+     ========================================================= */
+  function bloc(debut, fin, activite, categorie, resultatAttendu){
+    return { debut:debut, fin:fin, activite:activite, categorie:categorie, resultatAttendu:resultatAttendu||"", fait:false };
+  }
+
+  function programmeParDefaut(){
+    return {
+      lundi: [
+        bloc("08:30","09:00","Planification de la semaine","Pilotage","3 priorités majeures + objectifs"),
+        bloc("09:00","11:00","Dossier conseil / accompagnement prioritaire","Conseil/OD","Production concrète sur le dossier prioritaire"),
+        bloc("11:00","11:15","Pause","Pause",""),
+        bloc("11:15","12:30","Dossier conseil / structuration offre OD","Conseil/OD","Avancée concrète (dossier ou catalogue de services)"),
+        bloc("12:30","14:00","Pause déjeuner","Pause",""),
+        bloc("14:00","15:30","Recherche & sélection offres consultants","Business dev","3-5 offres qualifiées identifiées"),
+        bloc("15:30","15:45","Pause","Pause",""),
+        bloc("15:45","17:00","Soumission candidature(s)","Business dev","1 candidature préparée / envoyée"),
+        bloc("17:00","17:30","Mise à jour suivi (CRM / tableau opportunités)","Pilotage","Suivi commercial à jour")
+      ],
+      mardi: [
+        bloc("08:30","09:00","Veille rapide","Pilotage","1 information utile notée"),
+        bloc("09:00","10:30","Rédaction publication LinkedIn","Visibilité","Post hebdomadaire prêt ou programmé"),
+        bloc("10:30","10:45","Pause","Pause",""),
+        bloc("10:45","12:30","Dossier conseil / accompagnement","Conseil/OD","Avancée concrète sur le dossier en cours"),
+        bloc("12:30","14:00","Pause déjeuner","Pause",""),
+        bloc("14:00","15:30","Proposition d'offre ciblée (organisme)","Business dev","1 proposition personnalisée rédigée"),
+        bloc("15:30","15:45","Pause","Pause",""),
+        bloc("15:45","16:30","Activité commerciale testeurs (installation, retours)","Business dev","Installations / retours suivis"),
+        bloc("16:30","17:30","Gouvernance CV-AV — section B42","B42","Avancée sur un document ou dossier B42")
+      ],
+      mercredi: [
+        bloc("08:30","09:00","Revue rapide","Pilotage","Priorité du jour identifiée"),
+        bloc("09:00","11:00","Développement application (IA + GitHub)","Appli/Formation","Fonctionnalité développée"),
+        bloc("11:00","11:15","Pause","Pause",""),
+        bloc("11:15","12:30","GitHub / tests","Appli/Formation","Version fonctionnelle / correction"),
+        bloc("12:30","14:00","Pause déjeuner","Pause",""),
+        bloc("14:00","15:30","Formation en ligne ODP / AFD","Appli/Formation","1 module avancé ou terminé"),
+        bloc("15:30","15:45","Pause","Pause",""),
+        bloc("15:45","17:00","Formation (suite) / prise de notes","Appli/Formation","Synthèse exploitable"),
+        bloc("17:00","17:30","Tampon / imprévu","Tampon","Marge pour aléas de la semaine")
+      ],
+      jeudi: [
+        bloc("08:30","09:00","Revue pipeline / veille missions","Pilotage","Opportunités pertinentes notées"),
+        bloc("09:00","11:00","Dossier conseil / accompagnement","Conseil/OD","Livrable ou dossier avancé"),
+        bloc("11:00","11:15","Pause","Pause",""),
+        bloc("11:15","12:30","Recherche & soumission offres consultants (suite)","Business dev","1 dossier envoyé"),
+        bloc("12:30","14:00","Pause déjeuner","Pause",""),
+        bloc("14:00","15:30","Proposition d'offre ciblée (finalisation)","Business dev","Proposition envoyée"),
+        bloc("15:30","15:45","Pause","Pause",""),
+        bloc("15:45","16:45","RDV mentor","Visibilité","Conseil + décisions + actions"),
+        bloc("16:45","17:30","Tampon / imprévu","Tampon","Marge pour aléas de la semaine")
+      ],
+      vendredi: [
+        bloc("08:30","09:00","Revue pipeline","Pilotage","Relances à faire identifiées"),
+        bloc("09:00","11:00","Dossier conseil / accompagnement","Conseil/OD","Finalisation / livraison"),
+        bloc("11:00","11:15","Pause","Pause",""),
+        bloc("11:15","12:30","Relances commerciales","Business dev","3-5 relances envoyées"),
+        bloc("12:30","14:00","Pause déjeuner","Pause",""),
+        bloc("14:00","15:00","Application (IA / GitHub) — amélioration","Appli/Formation","Amélioration / correction livrée"),
+        bloc("15:00","15:15","Pause","Pause",""),
+        bloc("15:15","16:00","Testeurs — retours & suivi","Business dev","Retours utilisateurs consolidés"),
+        bloc("16:00","17:00","Bilan hebdomadaire","Pilotage","Score, résultats, priorités semaine suivante"),
+        bloc("17:00","17:30","Tampon / imprévu","Tampon","Marge pour aléas de la semaine")
+      ],
+      samedi: [
+        bloc("09:00","10:00","Temps libre / sport / personnel","Repos","Ressourcement"),
+        bloc("10:00","11:00","Rattrapage optionnel (seulement si retard réel)","Tampon","À utiliser uniquement si nécessaire"),
+        bloc("16:00","17:00","Famille / CV-AV (activité prévue)","Repos","Moment famille ou communauté honoré"),
+        bloc("17:00","23:00","Détente — pas de travail lourd","Repos","Déconnexion")
+      ],
+      dimanche: [
+        bloc("09:30","10:30","LinkedIn — programmer / finaliser publication","Visibilité","Publication de la semaine prête"),
+        bloc("10:30","11:00","Veille opportunités (rapide)","Business dev","Panorama rapide des opportunités"),
+        bloc("11:00","11:30","Lecture / développement personnel","Pilotage","1 idée ou apprentissage noté"),
+        bloc("18:00","18:30","Préparation semaine suivante","Pilotage","3 priorités + RDV + tâches planifiés"),
+        bloc("18:30","23:00","Repos / famille","Repos","Déconnexion")
+      ]
+    };
+  }
+
+  /* =========================================================
+     3. Stockage local (localStorage)
+     ========================================================= */
+  var STORAGE_KEY = "agendaHK_semaine";
+
+  function assignIds(semaine){
+    Object.keys(semaine).forEach(function(jour){
+      semaine[jour].forEach(function(b, i){
+        if(!b.id) b.id = jour + "-" + i + "-" + b.debut.replace(":","");
+      });
+    });
+    return semaine;
+  }
+
+  function chargerSemaine(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var data = JSON.parse(raw);
+        if(data && typeof data === "object") return assignIds(data);
+      }
+    }catch(e){ /* localStorage indisponible ou corrompu : on repart du programme par défaut */ }
+    var defaut = assignIds(programmeParDefaut());
+    sauvegarderSemaine(defaut);
+    return defaut;
+  }
+
+  function sauvegarderSemaine(semaine){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(semaine));
+    }catch(e){ /* stockage plein ou indisponible : on continue sans persister */ }
+  }
+
+  var semaine = chargerSemaine();
+
+  /* =========================================================
+     4. Utilitaires date / heure
+     ========================================================= */
+  var JOURS_CLES = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+  var JOURS_LABEL = {
+    dimanche:"Dimanche", lundi:"Lundi", mardi:"Mardi", mercredi:"Mercredi",
+    jeudi:"Jeudi", vendredi:"Vendredi", samedi:"Samedi"
+  };
+
+  function jourClef(date){ return JOURS_CLES[date.getDay()]; }
+
+  function versMinutes(hhmm){
+    var p = hhmm.split(":");
+    return parseInt(p[0],10) * 60 + parseInt(p[1],10);
+  }
+  function versHHMM(mins){
+    mins = ((mins % 1440) + 1440) % 1440;
+    var h = Math.floor(mins/60), m = mins % 60;
+    return (h<10?"0":"")+h + ":" + (m<10?"0":"")+m;
+  }
+
+  function formatDateLongue(date){
+    var s = date.toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
+    return s;
+  }
+  function formatHeure(date){
+    var h = date.getHours(), m = date.getMinutes();
+    return (h<10?"0":"")+h + ":" + (m<10?"0":"")+m;
+  }
+
+  /* =========================================================
+     5. Logique écran "Maintenant"
+     ========================================================= */
+  function blocsDuJour(jour){
+    return (semaine[jour] || []).slice().sort(function(a,b){
+      return versMinutes(a.debut) - versMinutes(b.debut);
+    });
+  }
+
+  function trouverBlocCourant(jour, minsMaintenant){
+    var blocs = blocsDuJour(jour);
+    for(var i=0;i<blocs.length;i++){
+      var b = blocs[i];
+      if(versMinutes(b.debut) <= minsMaintenant && minsMaintenant < versMinutes(b.fin)) return b;
+    }
+    return null;
+  }
+
+  function trouverProchainBloc(jour, minsMaintenant){
+    var blocs = blocsDuJour(jour);
+    for(var i=0;i<blocs.length;i++){
+      if(versMinutes(blocs[i].debut) > minsMaintenant) return blocs[i];
+    }
+    return null;
+  }
+
+  function marquerFait(jour, id){
+    var arr = semaine[jour] || [];
+    for(var i=0;i<arr.length;i++){
+      if(arr[i].id === id){ arr[i].fait = !arr[i].fait; break; }
+    }
+    sauvegarderSemaine(semaine);
+    render();
+  }
+
+  // Reporte le bloc `id` à la première plage libre restante du jour.
+  function reporterBloc(jour, id){
+    var arr = semaine[jour] || [];
+    var idx = -1;
+    for(var i=0;i<arr.length;i++){ if(arr[i].id === id){ idx = i; break; } }
+    if(idx === -1) return;
+
+    var courant = arr[idx];
+    var duree = versMinutes(courant.fin) - versMinutes(courant.debut);
+    var maintenant = new Date();
+    var minsMaintenant = maintenant.getHours()*60 + maintenant.getMinutes();
+
+    // Autres blocs du jour, triés, à partir de maintenant.
+    var autres = arr.filter(function(b){ return b.id !== id; })
+                     .slice()
+                     .sort(function(a,b){ return versMinutes(a.debut) - versMinutes(b.debut); });
+
+    var pointDepart = Math.max(minsMaintenant, versMinutes(courant.fin));
+    var creneau = null;
+
+    for(var j=0;j<autres.length;j++){
+      var b = autres[j];
+      var debutB = versMinutes(b.debut), finB = versMinutes(b.fin);
+      if(finB <= pointDepart) continue; // bloc déjà passé
+      var debutLibre = Math.max(pointDepart, 0);
+      if(debutB - debutLibre >= duree && debutB > pointDepart){
+        creneau = debutLibre;
+        break;
+      }
+      pointDepart = Math.max(pointDepart, finB);
+    }
+    if(creneau === null){
+      // Plage libre après le dernier bloc, si elle tient avant minuit.
+      if(pointDepart + duree <= 24*60){
+        creneau = pointDepart;
+      }
+    }
+
+    if(creneau === null){
+      alert("Aucune plage libre restante aujourd'hui pour reporter ce bloc.");
+      return;
+    }
+
+    courant.debut = versHHMM(creneau);
+    courant.fin = versHHMM(creneau + duree);
+    sauvegarderSemaine(semaine);
+    render();
+  }
+
+  function el(tag, cls, html){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  function renderMaintenant(){
+    var container = document.getElementById("maintenantContent");
+    container.innerHTML = "";
+
+    var maintenant = new Date();
+    var jour = jourClef(maintenant);
+    var minsMaintenant = maintenant.getHours()*60 + maintenant.getMinutes();
+
+    document.getElementById("dateLine").textContent = formatDateLongue(maintenant);
+    document.getElementById("timeLine").textContent = "Il est " + formatHeure(maintenant);
+
+    var blocCourant = trouverBlocCourant(jour, minsMaintenant);
+    var prochain = trouverProchainBloc(jour, minsMaintenant);
+
+    if(!blocCourant){
+      var empty = el("div","empty-state");
+      empty.innerHTML =
+        '<div class="emoji">🌤️</div>' +
+        '<div class="msg">Rien de prévu — profites-en</div>' +
+        '<div class="sub">Aucun créneau en cours dans ton programme.</div>';
+      container.appendChild(empty);
+
+      if(prochain){
+        container.appendChild(renderApercuSuivant(prochain));
+      }
+      return;
+    }
+
+    var cat = catInfo(blocCourant.categorie);
+    var card = el("div","now-card");
+
+    var bar = el("div","cat-bar");
+    bar.style.background = cat.color;
+    card.appendChild(bar);
+
+    var chip = el("div","cat-chip", '<span class="swatch"></span>' + cat.label);
+    chip.style.background = hexToRgba(cat.color, 0.16);
+    chip.style.color = cat.color;
+    chip.querySelector(".swatch").style.background = cat.color;
+    card.appendChild(chip);
+
+    card.appendChild(el("div","activite", escapeHtml(blocCourant.activite)));
+
+    if(blocCourant.resultatAttendu){
+      card.appendChild(el("div","resultat", "<b>Résultat attendu&nbsp;:</b> " + escapeHtml(blocCourant.resultatAttendu)));
+    }
+
+    card.appendChild(el("div","fin-line", "⏱ Se termine à " + blocCourant.fin));
+
+    var actions = el("div","actions");
+
+    var btnFait = el("button","btn btn-fait" + (blocCourant.fait ? " done" : ""),
+      blocCourant.fait ? "✓ Fait" : "Marquer fait");
+    btnFait.addEventListener("click", function(){ marquerFait(jour, blocCourant.id); });
+    actions.appendChild(btnFait);
+
+    var btnReporter = el("button","btn btn-reporter","↻ Reporter");
+    btnReporter.addEventListener("click", function(){ reporterBloc(jour, blocCourant.id); });
+    actions.appendChild(btnReporter);
+
+    card.appendChild(actions);
+    container.appendChild(card);
+
+    if(prochain){
+      container.appendChild(renderApercuSuivant(prochain));
+    }
+  }
+
+  function renderApercuSuivant(blocSuivant){
+    var cat = catInfo(blocSuivant.categorie);
+    var box = el("div","next-preview");
+    var swatch = el("div","swatch");
+    swatch.style.background = cat.color;
+    box.appendChild(swatch);
+
+    var texte = el("div","");
+    texte.style.minWidth = "0";
+    texte.style.flex = "1";
+    texte.innerHTML =
+      '<div class="label">Ensuite</div>' +
+      '<div class="titre">' + escapeHtml(blocSuivant.activite) + '</div>';
+    box.appendChild(texte);
+
+    box.appendChild(el("div","heure", blocSuivant.debut));
+    return box;
+  }
+
+  function hexToRgba(hex, alpha){
+    var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  function escapeHtml(str){
+    var d = document.createElement("div");
+    d.textContent = str == null ? "" : str;
+    return d.innerHTML;
+  }
+
+  /* =========================================================
+     6. Navigation par onglets
+     ========================================================= */
+  var screens = ["maintenant","semaine","bilan","reglages"];
+
+  function afficherEcran(nom){
+    screens.forEach(function(s){
+      document.getElementById("screen-" + s).classList.toggle("active", s === nom);
+    });
+    document.querySelectorAll(".tab-btn").forEach(function(btn){
+      btn.classList.toggle("active", btn.getAttribute("data-screen") === nom);
+    });
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      afficherEcran(btn.getAttribute("data-screen"));
+    });
+  });
+
+  /* =========================================================
+     7. Rendu global + rafraîchissement périodique
+     ========================================================= */
+  function render(){
+    renderMaintenant();
+  }
+
+  render();
+  setInterval(render, 30000); // détection auto du bloc en cours, sans action utilisateur
+
+  /* =========================================================
+     8. Service worker (hors-ligne + installabilité)
+     ========================================================= */
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){ /* silencieux */ });
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
